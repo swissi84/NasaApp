@@ -69,6 +69,6 @@ dependencies {
     implementation(libs.converterMoshi)
 
     //AsyncImage
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation(libs.coil.compose)
 
 }
