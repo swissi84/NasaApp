@@ -17,7 +17,7 @@ open class ProductsViewModel: ViewModel() {
 
     init { loadProducts() }
 
-    open fun loadProducts() {
+    fun loadProducts() {
         viewModelScope.launch {
             try {
 
