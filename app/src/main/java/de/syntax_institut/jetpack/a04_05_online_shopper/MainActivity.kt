@@ -16,7 +16,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import de.syntax_institut.fakeStore.HomeView
+import de.syntax_institut.jetpack.a04_05_online_shopper.Navigation.AppNavigation
 import de.syntax_institut.jetpack.a04_05_online_shopper.ui.theme.AppTheme
 
 
@@ -25,25 +29,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppTheme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.linearGradient(
-                                colors = listOf(Color(0xFF13279A), Color(0xFFCED2E1)),
-                            )
-                        )
-                ) {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                    HomeView(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = viewModel()
-                    )
+            AppNavigation()
                 }
             }
         }
-        }
-    }
-}
+
+
+
+

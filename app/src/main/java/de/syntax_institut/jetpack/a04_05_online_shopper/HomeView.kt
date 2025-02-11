@@ -1,5 +1,6 @@
 package de.syntax_institut.fakeStore
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,14 +41,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
+import de.syntax_institut.jetpack.a04_05_online_shopper.NasaDetailView
+import de.syntax_institut.jetpack.a04_05_online_shopper.NasaLink
 
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaViewModel
 
 
 @Composable
 fun HomeView(
-    viewModel: NasaViewModel,
+    viewModel: NasaViewModel = viewModel(),
+    onNavigateToNasaDetailView: (NasaLink) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val nasaData by viewModel.nasaDataState.collectAsState()
@@ -71,7 +81,12 @@ fun HomeView(
             itemsIndexed(filteredLinks) { index, nasaLink ->
                 ElevatedCard(
                     modifier = Modifier
-                        .padding(4.dp),
+                        .padding(4.dp)
+                        .clickable {
+
+                                onNavigateToNasaDetailView(nasaLink)
+
+                        },
                     elevation = CardDefaults.elevatedCardElevation(4.dp)
 
                 ) {
