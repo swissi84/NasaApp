@@ -5,10 +5,10 @@ import kotlinx.coroutines.runBlocking
 
 // Testfunktion
 fun main() = runBlocking {
-    val api = ProductAPI.retrofitService
+    val api = NasaAPI.retrofitService
 
     try {
-        val response = api.getArticles()
+        val response = api.searchData("nasa")
         println("API Response: ${response}")
     } catch (e: Exception) {
         println("API Fehler: ${e.message}")

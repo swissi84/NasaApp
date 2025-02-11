@@ -5,9 +5,9 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
-
-const val BASE_URL = "https://fakestoreapi.com/"
+const val BASE_URL = "https://images-api.nasa.gov/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -20,10 +20,10 @@ private val retrofit = Retrofit.Builder()
 
 
 interface APIService {
-    @GET("products")
-    suspend fun getArticles(): List<Product>
+    @GET("search")
+    suspend fun searchData(@Query("q") query: String ): NasaApiResponse
 }
 
-object ProductAPI {
+object NasaAPI {
     val retrofitService: APIService by lazy { retrofit.create(APIService::class.java) }
 }
