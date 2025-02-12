@@ -6,28 +6,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.magnifier
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -36,67 +29,65 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
-import de.syntax_institut.jetpack.a04_05_online_shopper.NasaDetailView
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaLink
 
-import de.syntax_institut.jetpack.a04_05_online_shopper.NasaViewModel
+import de.syntax_institut.jetpack.a04_05_online_shopper.ImageViewModel
 
 
 @Composable
-fun HomeView(
-    viewModel: NasaViewModel = viewModel(),
-    onNavigateToNasaDetailView: (NasaLink) -> Unit,
+fun ImageView(
+    ImageViewModel: ImageViewModel,
+    onNavigateToNasaDetailView: (NasaLink, NasaData) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val nasaData by viewModel.nasaDataState.collectAsState()
-    val nasaLink by viewModel.nasaLinksState.collectAsState()
+    val nasaData by ImageViewModel.nasaDataState.collectAsState()
+    val nasaLink by ImageViewModel.nasaLinksState.collectAsState()
 
     var search by remember { mutableStateOf("") }
     var isSearchVisible by remember { mutableStateOf(false) }
 
     val filteredLinks = nasaLink.filter { it.rel == "preview" && it.href.isNotEmpty() }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        ) {
+    ) {
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize(),
             columns = GridCells.Fixed(3)
         ) {
             itemsIndexed(filteredLinks) { index, nasaLink ->
+                println(nasaLink)
+                println(nasaData)
+                val nasaDataItem = nasaData[index]
+
                 ElevatedCard(
                     modifier = Modifier
                         .padding(4.dp)
-                        .clickable {
-
-                                onNavigateToNasaDetailView(nasaLink)
-
-                        },
-                    elevation = CardDefaults.elevatedCardElevation(4.dp)
-
-                ) {
-                    AsyncImage(
+                        .clickable { onNavigateToNasaDetailView(nasaLink, nasaDataItem) },
+                    elevation = CardDefaults.elevatedCardElevation(4.dp),
+                    ) {
+                    SubcomposeAsyncImage(
                         model = nasaLink.href,
-                        contentDescription = "Nasa Image",
+                        contentDescription = "Nasa Image Detail",
                         modifier = Modifier
-                            .fillMaxWidth()
                             .height(100.dp),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
+
+                        loading = { CircularProgressIndicator(
+                            modifier = modifier
+                                .scale(.5f)
+                        )
+                        }
                     )
                 }
             }
@@ -113,14 +104,14 @@ fun HomeView(
 
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
-                ) {
+            ) {
 
                 if (isSearchVisible) {
                     TextField(
                         value = search,
                         onValueChange = {
                             search = it.lowercase()
-                            viewModel.loadNasaItems(it)
+                            ImageViewModel.loadNasaItems(it)
                         },
 
                         placeholder = { Text("Search..") },
@@ -144,5 +135,7 @@ fun HomeView(
         }
     }
 }
+
+
 
 

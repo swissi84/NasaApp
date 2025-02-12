@@ -19,11 +19,14 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 
-interface APIService {
+interface ApiImageSearch {
     @GET("search")
     suspend fun searchData(@Query("q") query: String ): NasaApiResponse
 }
 
-object NasaAPI {
-    val retrofitService: APIService by lazy { retrofit.create(APIService::class.java) }
+object NasaImageAPI {
+    val retrofitService: ApiImageSearch by lazy { retrofit.create(ApiImageSearch::class.java) }
 }
+
+
+

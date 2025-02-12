@@ -1,27 +1,27 @@
-package de.syntax_institut.jetpack.a04_05_online_shopper
+package de.syntax_institut.jetpack.a04_05_online_shopper.Views
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
+import de.syntax_institut.jetpack.a04_05_online_shopper.NasaLink
+import de.syntax_institut.jetpack.a04_05_online_shopper.ImageViewModel
 
 @Composable
 fun NasaDetailView(
-   viewModel: NasaViewModel = viewModel(),
     nasaLink: NasaLink,
-
-   ) {
-
-    val nasaData by viewModel.nasaDataState.collectAsState()
+    nasaData: NasaData,
+    ) {
 
     Box(
         modifier = Modifier
@@ -29,15 +29,21 @@ fun NasaDetailView(
             .padding(16.dp)
     ) {
         Column(
-
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             Text(nasaLink.rel)
+            Text(nasaData.title)
 
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = nasaLink.href,
                 contentDescription = "Nasa Image Detail",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Fit,
+                loading = { CircularProgressIndicator(
+                    Modifier.scale(.5f)
+                )
+                }
             )
         }
     }

@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-open class NasaViewModel: ViewModel() {
+open class ImageViewModel: ViewModel() {
 
-    private val api = NasaAPI.retrofitService
+    private val api = NasaImageAPI.retrofitService
 
     private val _nasaDataState = MutableStateFlow<List<NasaData>>(emptyList())
     val nasaDataState = _nasaDataState.asStateFlow()
@@ -32,7 +32,7 @@ open class NasaViewModel: ViewModel() {
                 _nasaLinksState.value = nasaLinksList
 
             } catch (e: Exception) {
-                Log.e("loadProducts", "Error: $e")
+                Log.e("load NasaImage", "Error: $e")
             }
         }
     }
