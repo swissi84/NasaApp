@@ -20,7 +20,7 @@ fun ClickableLink(link: String) {
         style = MaterialTheme.typography.subtitle2 ,
         textDecoration = TextDecoration.Underline,
         modifier = Modifier
-            .padding(16.dp)
+            .padding(4.dp)
             .clickable {
                 uriHandler.openUri(link)
             }

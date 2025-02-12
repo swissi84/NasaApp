@@ -1,13 +1,18 @@
 package de.syntax_institut.jetpack.a04_05_online_shopper.Views
 
+import android.media.Image
+import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,12 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidView
+import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.SubcomposeAsyncImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import de.syntax_institut.jetpack.a04_05_online_shopper.R
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.ClickableLink
 
 
@@ -41,17 +50,35 @@ fun HomeView(
 
     val nasaDaily by homeViewModel.nasaDailyState.collectAsState()
 
-
-
     Column(
         modifier,
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Text(
-            text = "Nasa of the Day",
-            style = MaterialTheme.typography.headlineLarge
-        )
+
+       Row(
+           modifier = Modifier
+               .fillMaxWidth()
+               .padding(horizontal = 30.dp),
+           horizontalArrangement = Arrangement.Start,
+           verticalAlignment = Alignment.CenterVertically
+       ) {
+
+           Image(
+               painter = painterResource(id = R.drawable.nasalogo),
+               contentDescription = "Nasa Logo",
+               modifier = Modifier
+                   .size(60.dp)
+                   .padding(4.dp)
+           )
+           Spacer(Modifier.padding(horizontal = 10.dp))
+
+           Text(
+               text = "Nasa of the Day",
+               style = MaterialTheme.typography.headlineLarge
+           )
+       }
+
         nasaDaily?.let {
             Text(
                 text = it.date,
@@ -76,7 +103,7 @@ fun HomeView(
                     textAlign = TextAlign.Center,
                 )
             }
-            Spacer(Modifier.padding(8.dp))
+            Spacer(Modifier.padding(vertical = 10.dp))
 
             if ((nasaDaily?.media_type ?: "image") == "video") {
                 nasaDaily?.url?.let { it ->
@@ -86,6 +113,8 @@ fun HomeView(
                         )
                     }
                 }
+
+                Spacer(Modifier.padding(vertical = 10.dp))
 
                 nasaDaily?.url?.let { ClickableLink(it) }
 
@@ -109,7 +138,7 @@ fun HomeView(
                 )
             }
 
-            Spacer(Modifier.padding(8.dp))
+            Spacer(Modifier.padding(4.dp))
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -141,6 +170,6 @@ fun YouTubePlayer(videoId: String) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(200.dp)
     )
 }

@@ -63,7 +63,9 @@ fun ImageView(
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize(),
-            columns = GridCells.Fixed(3)
+            columns = GridCells.Fixed(3),
+            horizontalArrangement = Arrangement.Center,
+            verticalArrangement =  Arrangement.Center
         ) {
             itemsIndexed(filteredLinks) { index, nasaLink ->
                 println(nasaLink)
@@ -74,21 +76,36 @@ fun ImageView(
                     modifier = Modifier
                         .padding(4.dp)
                         .clickable { onNavigateToNasaDetailView(nasaLink, nasaDataItem) },
-                    elevation = CardDefaults.elevatedCardElevation(4.dp),
-                    ) {
-                    SubcomposeAsyncImage(
-                        model = nasaLink.href,
-                        contentDescription = "Nasa Image Detail",
-                        modifier = Modifier
-                            .height(100.dp),
-                        contentScale = ContentScale.Crop,
 
-                        loading = { CircularProgressIndicator(
-                            modifier = modifier
-                                .scale(.5f)
+                    elevation = CardDefaults.elevatedCardElevation(4.dp),
+
+                    ) {
+
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        SubcomposeAsyncImage(
+                            model = nasaLink.href,
+                            contentDescription = "Nasa Image Detail",
+                            modifier = Modifier
+                                .height(100.dp),
+                            contentScale = ContentScale.Crop,
+                            loading = {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.scale(1f)
+                                    )
+                                }
+                            }
                         )
-                        }
-                    )
+                    }
                 }
             }
         }

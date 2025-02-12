@@ -37,6 +37,7 @@ import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.NasaDetailView
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaLink
 import de.syntax_institut.jetpack.a04_05_online_shopper.ImageViewModel
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.HomeView
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.model.HomeViewModel
 import de.syntax_institut.jetpack.a04_05_online_shopper.ui.theme.AppTheme
@@ -59,12 +60,9 @@ fun AppNavigation(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Color(0xFF13279A), Color(0xFFCED2E1)),
-                    )
-                )
+
         ) {
+           FullImageBackground()
 
             Scaffold(modifier = Modifier
                 .fillMaxSize(),
