@@ -37,6 +37,5 @@ data class NasaApiDailyImage(
     val media_type: String,
     val service_version: String,
     val title: String,
-    val url: String,
-
-    )
+    val url: String?,
+)

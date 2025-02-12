@@ -31,4 +31,9 @@ open class HomeViewModel: ViewModel() {
             }
         }
     }
+
+    fun extractYouTubeVideoId(url: String): String? {
+        val regex = "^(?:https?://)?(?:www\\.)?(?:youtube\\.com/watch\\?v=|youtu\\.be/|youtube.com/embed/)([^&?/]+)".toRegex()
+        return regex.find(url)?.groupValues?.get(1)
+    }
 }

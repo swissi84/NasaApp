@@ -123,7 +123,7 @@ fun AppNavigation(
 
                     composable<HomeView> {
                         HomeView(
-                            HomeViewModel = HomeViewModel
+                            homeViewModel = HomeViewModel
                         )
                     }
 

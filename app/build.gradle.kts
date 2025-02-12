@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.material:material:1.7.7")
+    implementation(libs.androidx.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -74,5 +74,11 @@ dependencies {
 
     //AsyncImage
     implementation(libs.coil.compose)
+
+    // Video Player
+    implementation (libs.exoplayer.v2181)
+
+    //YouTubePlayer
+    implementation (libs.core)
 
 }
