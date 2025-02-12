@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "04-05-Online-Shopper"
+rootProject.name = "NasaApp"
 include(":app")
  

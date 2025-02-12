@@ -11,7 +11,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "de.syntax_institut.jetpack.a04_05_online_shopper"
+        applicationId = "de.syntax_institut.jetpack.NasaApp"
         minSdk = 27
         targetSdk = 35
         versionCode = 1
