@@ -18,11 +18,12 @@ data class NasaItem(
 
 data class NasaData(
     val center: String,
-    val dateCreated: String? = null,
+    val dateCreated: String = "",
     val description: String,
-    val nasa_Id: String? = null,
-    val secondaryCreator: String?,
-    val title: String
+    val nasa_id: String,
+    val secondaryCreator: String = "",
+    val title: String,
+    val media_type: String,
 )
 
 data class NasaLink(

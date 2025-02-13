@@ -1,4 +1,4 @@
-package de.syntax_institut.fakeStore
+package de.syntax_institut.jetpack.a04_05_online_shopper.Views
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -34,33 +34,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaLink
-import de.syntax_institut.jetpack.a04_05_online_shopper.ImageViewModel
+
 import de.syntax_institut.jetpack.a04_05_online_shopper.R
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.ExoPlayer
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.YouTubePlayer
+import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaDataAssets
+import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaLinkAssets
+import de.syntax_institut.jetpack.a04_05_online_shopper.data.model.VideoViewModel
 
 @Composable
-fun ImageView(
-    imageViewModel: ImageViewModel,
-    onNavigateToDetailViewImage: (NasaLink, NasaData) -> Unit,
+fun VideoView(
+    videoViewModel: VideoViewModel,
+    onNavigateToDetailViewVideo: (NasaLinkAssets, NasaDataAssets) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val nasaData by imageViewModel.nasaDataState.collectAsState()
-    val nasaLink by imageViewModel.nasaLinksState.collectAsState()
+    val nasaDataAssets by videoViewModel.nasaDataAssetsState.collectAsState()
+    val nasaLinkAssets by videoViewModel.nasaLinksAssetsState.collectAsState()
 
-    var search by remember { mutableStateOf("") }
+    var search2 by remember { mutableStateOf("") }
     var isSearchVisible by remember { mutableStateOf(false) }
 
-    val filteredLinksImage = nasaLink.filter { it.rel == "preview" /*&& it.href.isNotEmpty()*/ }
+    val filteredLinksVideo = nasaLinkAssets.filter { it.rel == "preview" && it.href.isNotEmpty() }
 
     Box(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        if (filteredLinksImage.isNotEmpty()) {
+
+        if (filteredLinksVideo.isNotEmpty()) {
             LazyVerticalGrid(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -69,15 +76,15 @@ fun ImageView(
                 verticalArrangement = Arrangement.Center
             ) {
 
-                itemsIndexed(filteredLinksImage) { index, nasaLink ->
-                    println(nasaLink)
-                    println(nasaData)
-                    val nasaDataItem = nasaData[index]
+                itemsIndexed(nasaLinkAssets) { index, nasaLinkAssets ->
+                    println(nasaLinkAssets)
+                    println(nasaDataAssets)
+                   val nasaDataAssets = nasaDataAssets[index]
 
                     ElevatedCard(
                         modifier = Modifier
                             .padding(4.dp)
-                            .clickable { onNavigateToDetailViewImage(nasaLink, nasaDataItem) },
+                            .clickable { onNavigateToDetailViewVideo(nasaLinkAssets, nasaDataAssets) },
 
                         elevation = CardDefaults.elevatedCardElevation(4.dp),
 
@@ -90,7 +97,7 @@ fun ImageView(
                             contentAlignment = Alignment.Center
                         ) {
                             SubcomposeAsyncImage(
-                                model = nasaLink.href,
+                                model = nasaLinkAssets.href,
                                 contentDescription = "Nasa Image Detail",
                                 modifier = Modifier
                                     .height(100.dp),
@@ -110,7 +117,7 @@ fun ImageView(
                                             modifier = Modifier.scale(1f))
                                     }
                                 },
-                                )
+                            )
                         }
                     }
                 }
@@ -149,10 +156,10 @@ fun ImageView(
 
             if (isSearchVisible) {
                 TextField(
-                    value = search,
+                    value = search2,
                     onValueChange = {
-                        search = it.lowercase()
-                        imageViewModel.loadNasaImage(it)
+                        search2 = it.lowercase()
+                        videoViewModel.loadNasaVideo(it)
                     },
 
                     placeholder = { Text("Search..") },
@@ -174,8 +181,3 @@ fun ImageView(
         }
     }
 }
-
-
-
-
-

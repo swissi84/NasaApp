@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -18,8 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -35,12 +34,17 @@ import androidx.navigation.toRoute
 
 import de.syntax_institut.fakeStore.ImageView
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
-import de.syntax_institut.jetpack.a04_05_online_shopper.Views.NasaDetailView
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.DetailViewImage
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaLink
 import de.syntax_institut.jetpack.a04_05_online_shopper.ImageViewModel
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.FullImageBackground
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.DetailViewVideo
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.HomeView
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.VideoView
+import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaDataAssets
+import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaLinkAssets
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.model.HomeViewModel
+import de.syntax_institut.jetpack.a04_05_online_shopper.data.model.VideoViewModel
 import de.syntax_institut.jetpack.a04_05_online_shopper.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 
@@ -48,8 +52,9 @@ import kotlinx.serialization.Serializable
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AppNavigation(
-    HomeViewModel: HomeViewModel = viewModel(),
-    ImageViewModel: ImageViewModel = viewModel(),
+    homeViewModel: HomeViewModel = viewModel(),
+    imageViewModel: ImageViewModel = viewModel(),
+    videoViewModel: VideoViewModel = viewModel(),
 ) {
 
     val navController = rememberNavController()
@@ -124,47 +129,89 @@ fun AppNavigation(
 
                     composable<HomeView> {
                         HomeView(
-                            homeViewModel = HomeViewModel
+                            homeViewModel = homeViewModel
                         )
                     }
 
                     composable<ImageView> {
                         ImageView(
-                            onNavigateToNasaDetailView = { nasaLink, nasaData ->
+                            imageViewModel = imageViewModel,
+                            onNavigateToDetailViewImage = { nasaLink, nasaData ->
                                 navController.navigate(
-                                    NasaDetailRoute(
+                                    NasaDetailRouteImage(
                                         href = nasaLink.href,
                                         rel = nasaLink.rel,
                                         title = nasaData.title,
                                         center = nasaData.center,
                                         dateCreated = nasaData.dateCreated,
                                         description = nasaData.description,
-                                        nasa_Id = nasaData.nasa_Id,
-                                        secondaryCreator = nasaData.secondaryCreator
+                                        nasa_id = nasaData.nasa_id,
+                                        secondaryCreator = nasaData.secondaryCreator,
+                                        media_item = nasaData.media_type,
                                     )
                                 )
                             },
-                            ImageViewModel = ImageViewModel,
-
                             )
                     }
 
-                    composable<NasaDetailRoute> {
-                        val nasaDetailRoute = it.toRoute<NasaDetailRoute>()
+                    composable<VideoView> {
+                        VideoView(
+                            videoViewModel = videoViewModel,
+                            onNavigateToDetailViewVideo =  { nasaLink, nasaData ->
+                                navController.navigate(
+                                    NasaDetailRouteVideo(
+                                        href = nasaLink.href,
+                                        rel = nasaLink.rel,
+                                        title = nasaData.title,
+                                        center = nasaData.center,
+                                        dateCreated = nasaData.dateCreated,
+                                        description = nasaData.description,
+                                        nasa_id = nasaData.nasa_id,
+                                        media_item = nasaData.media_type,
+                                    )
+                                )
+                            },
+
+                        )
+                    }
+
+                    composable<NasaDetailRouteImage> {
+                        val nasaDetailRouteImage = it.toRoute<NasaDetailRouteImage>()
                         Log.d("MoodDetailRoute", toString())
 
-                        NasaDetailView(
+                        DetailViewImage(
                             nasaLink = NasaLink(
-                                href = nasaDetailRoute.href,
-                                rel = nasaDetailRoute.rel,
+                                href = nasaDetailRouteImage.href,
+                                rel = nasaDetailRouteImage.rel,
                             ),
                             nasaData = NasaData(
-                                title = nasaDetailRoute.title,
-                                center = nasaDetailRoute.center,
-                                dateCreated = nasaDetailRoute.dateCreated,
-                                description = nasaDetailRoute.description,
-                                nasa_Id = nasaDetailRoute.nasa_Id,
-                                secondaryCreator = nasaDetailRoute.secondaryCreator,
+                                title = nasaDetailRouteImage.title,
+                                center = nasaDetailRouteImage.center,
+                                dateCreated = nasaDetailRouteImage.dateCreated,
+                                description = nasaDetailRouteImage.description,
+                                nasa_id = nasaDetailRouteImage.nasa_id,
+                                secondaryCreator = nasaDetailRouteImage.secondaryCreator,
+                                media_type = nasaDetailRouteImage.media_item,
+                            )
+                        )
+                    }
+
+                    composable<NasaDetailRouteVideo> {
+                        val nasaDetailRouteVideo = it.toRoute<NasaDetailRouteVideo>()
+                        Log.d("MoodDetailRoute", toString())
+
+                        DetailViewVideo(
+                            nasaLinkAssets = NasaLinkAssets(
+                                href = nasaDetailRouteVideo.href,
+                                rel = nasaDetailRouteVideo.rel,
+                            ),
+                            nasaDataAssets = NasaDataAssets(
+                                title = nasaDetailRouteVideo.title,
+                                center = nasaDetailRouteVideo.center,
+                                dateCreated = nasaDetailRouteVideo.dateCreated,
+                                description = nasaDetailRouteVideo.description,
+                                nasa_id = nasaDetailRouteVideo.nasa_id,
+                                media_type = nasaDetailRouteVideo.media_item,
                             )
                         )
                     }
@@ -181,17 +228,36 @@ object HomeView
 object ImageView
 
 @Serializable
-data class NasaDetailRoute(
+object VideoView
+
+@Serializable
+data class NasaDetailRouteImage(
     val href: String,
     val rel: String,
     val title: String,
     val center: String,
-    val dateCreated: String?,
+    val dateCreated: String,
     val description: String,
-    val nasa_Id: String?,
-    val secondaryCreator: String?
+    val nasa_id: String,
+    val secondaryCreator: String,
+    val media_item: String,
 
 )
+
+@Serializable
+data class NasaDetailRouteVideo(
+    val href: String,
+    val rel: String,
+    val title: String,
+    val center: String,
+    val dateCreated: String,
+    val description: String,
+    val nasa_id: String,
+    val media_item: String,
+
+    )
+
+
 
 enum class NavItem(
     val route: Any,
@@ -200,4 +266,5 @@ enum class NavItem(
 ) {
     First(HomeView, "Home", Icons.Filled.Home),
     Second(ImageView, "Image", Icons.Filled.Image),
+    Third(VideoView, "Video", Icons.Filled.VideoLibrary),
 }

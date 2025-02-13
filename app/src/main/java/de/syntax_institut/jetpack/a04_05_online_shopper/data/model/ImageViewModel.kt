@@ -19,12 +19,12 @@ open class ImageViewModel: ViewModel() {
     private val _nasaLinksState = MutableStateFlow<List<NasaLink>>(emptyList())
     val nasaLinksState = _nasaLinksState.asStateFlow()
 
-    init { loadNasaItems("shuttle") }
+    init { loadNasaImage("shuttle") }
 
-    fun loadNasaItems(searchQuery: String) {
+    fun loadNasaImage(searchQuery2: String) {
         viewModelScope.launch {
             try {
-                val response = api.searchData(searchQuery.lowercase())
+                val response = api.searchImage(searchQuery2.lowercase())
                 val nasaDataList = response.collection.items.flatMap { it.data }
                 val nasaLinksList = response.collection.items.flatMap { it.links ?: emptyList() }
 
