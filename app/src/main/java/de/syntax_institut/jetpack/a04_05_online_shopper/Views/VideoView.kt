@@ -76,7 +76,7 @@ fun VideoView(
                 verticalArrangement = Arrangement.Center
             ) {
 
-                itemsIndexed(nasaLinkAssets) { index, nasaLinkAssets ->
+                itemsIndexed(filteredLinksVideo) { index, nasaLinkAssets ->
                     println(nasaLinkAssets)
                     println(nasaDataAssets)
                    val nasaDataAssets = nasaDataAssets[index]
