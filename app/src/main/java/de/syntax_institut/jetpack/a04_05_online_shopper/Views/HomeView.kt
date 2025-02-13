@@ -1,6 +1,8 @@
 package de.syntax_institut.jetpack.a04_05_online_shopper.Views
 
 import android.media.Image
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,18 +32,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.SubcomposeAsyncImage
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import de.syntax_institut.jetpack.a04_05_online_shopper.R
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.ClickableLink
-
+import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer as YouTubePlayer
 
 @Composable
 fun HomeView(
@@ -124,21 +128,44 @@ fun HomeView(
                     contentDescription = "Nasa Image Detail",
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
-                        .height(300.dp),
+                        .height(250.dp),
                     contentScale = ContentScale.Fit,
+                    onLoading = {
+                        Log.d("AsyncImage", "Image loading...")
+                    },
+                    onSuccess = { state ->
+                        Log.d("AsyncImage", "Image loaded successfully")
+                    },
 
                     loading = {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator(modifier = Modifier.scale(0.5f))
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .scale(0.5f))
+                        }
+                    },
+                    error = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text("Error loading Nasa of the Day!")
+                            Text("Check your Internet Connection..")
+                            Spacer(Modifier.padding(vertical = 6.dp))
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_error_outline_24),
+                                null
+                            )
                         }
                     }
                 )
             }
 
-            Spacer(Modifier.padding(4.dp))
+            Spacer(Modifier.padding(6.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -156,20 +183,3 @@ fun HomeView(
     }
 }
 
-@Composable
-fun YouTubePlayer(videoId: String) {
-    AndroidView(
-        factory = { context ->
-            YouTubePlayerView(context).apply {
-                addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                    override fun onReady(youTubePlayer: YouTubePlayer) {
-                        youTubePlayer.loadVideo(videoId, 0f) // Startet das Video bei Sekunde 0
-                    }
-                })
-            }
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-    )
-}

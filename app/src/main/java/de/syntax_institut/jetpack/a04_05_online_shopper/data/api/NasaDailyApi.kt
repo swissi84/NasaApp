@@ -5,6 +5,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.syntax_institut.jetpack.a04_05_online_shopper.ApiImageSearch
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaApiDailyImage
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaApiResponse
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -16,8 +18,19 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
+val loggingInterceptor = HttpLoggingInterceptor().apply {
+    // Logging Levels: BODY, BASIC, NONE, HEADERS
+    level = HttpLoggingInterceptor.Level.BODY
+}
+
+private val okHttpClient = OkHttpClient.Builder()
+    .addInterceptor(loggingInterceptor)
+    .build()
+
+
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .client(okHttpClient)
     .baseUrl(BASE_URL)
     .build()
 

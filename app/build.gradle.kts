@@ -81,4 +81,7 @@ dependencies {
     //YouTubePlayer
     implementation (libs.core)
 
+    //API Logger
+    implementation(libs.logging.interceptor)
+
 }

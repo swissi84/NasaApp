@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,7 +50,7 @@ import kotlinx.serialization.Serializable
 fun AppNavigation(
     HomeViewModel: HomeViewModel = viewModel(),
     ImageViewModel: ImageViewModel = viewModel(),
-    ) {
+) {
 
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -62,12 +63,14 @@ fun AppNavigation(
                 .fillMaxSize()
 
         ) {
-           FullImageBackground()
+            FullImageBackground()
 
             Scaffold(modifier = Modifier
                 .fillMaxSize(),
+
                 bottomBar = {
                     NavigationBar(
+                        modifier = Modifier,
                         containerColor = Color.Transparent,
                         tonalElevation = 5.dp
                     )
@@ -143,27 +146,27 @@ fun AppNavigation(
                             },
                             ImageViewModel = ImageViewModel,
 
-                        )
+                            )
                     }
 
                     composable<NasaDetailRoute> {
                         val nasaDetailRoute = it.toRoute<NasaDetailRoute>()
-                            Log.d("MoodDetailRoute", toString())
+                        Log.d("MoodDetailRoute", toString())
 
-                       NasaDetailView(
-                           nasaLink = NasaLink(
-                               href = nasaDetailRoute.href,
-                               rel =  nasaDetailRoute.rel,
-                           ),
-                           nasaData = NasaData(
-                               title = nasaDetailRoute.title,
-                               center = nasaDetailRoute.center,
-                               dateCreated = nasaDetailRoute.dateCreated,
-                               description = nasaDetailRoute.description,
-                               nasa_Id = nasaDetailRoute.nasa_Id,
-                               secondaryCreator = nasaDetailRoute.secondaryCreator,
-                               )
-                       )
+                        NasaDetailView(
+                            nasaLink = NasaLink(
+                                href = nasaDetailRoute.href,
+                                rel = nasaDetailRoute.rel,
+                            ),
+                            nasaData = NasaData(
+                                title = nasaDetailRoute.title,
+                                center = nasaDetailRoute.center,
+                                dateCreated = nasaDetailRoute.dateCreated,
+                                description = nasaDetailRoute.description,
+                                nasa_Id = nasaDetailRoute.nasa_Id,
+                                secondaryCreator = nasaDetailRoute.secondaryCreator,
+                            )
+                        )
                     }
                 }
             }

@@ -10,3 +10,20 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
+@Composable
+fun YouTubePlayer(videoId: String) {
+    AndroidView(
+        factory = { context ->
+            YouTubePlayerView(context).apply {
+                addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        youTubePlayer.loadVideo(videoId, 0f)
+                    }
+                })
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    )
+}

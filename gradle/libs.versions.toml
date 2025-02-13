@@ -21,6 +21,7 @@ composeMaterial = "1.4.0"
 uiTextGoogleFontsVersion = "1.7.7"
 compose = "1.7.7"
 kspVersion = "2.0.21-1.0.27"
+loggingInterceptor = "4.9.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,7 @@ moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "mo
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
 converterMoshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofitVersion" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

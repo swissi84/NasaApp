@@ -33,6 +33,8 @@ open class ImageViewModel: ViewModel() {
 
             } catch (e: Exception) {
                 Log.e("load NasaImage", "Error: $e")
+                _nasaLinksState.value = emptyList()
+                _nasaDataState.value = emptyList()
             }
         }
     }
