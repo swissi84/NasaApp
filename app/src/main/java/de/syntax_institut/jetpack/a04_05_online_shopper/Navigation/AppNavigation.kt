@@ -1,6 +1,7 @@
 package de.syntax_institut.jetpack.a04_05_online_shopper.Navigation
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import de.syntax_institut.fakeStore.ImageView
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.DetailViewImage
@@ -60,13 +62,21 @@ fun AppNavigation(
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
+//    val configuration = LocalConfiguration.current
+//    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+//    val systemUiController = rememberSystemUiController()
+//
+//    // Systemleisten ausblenden im Querformat
+//    LaunchedEffect(isLandscape) {
+//        systemUiController.isSystemBarsVisible = !isLandscape
+//    }
+
     AppTheme(
 //        isDarkMode = isDarkMode
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-
         ) {
             FullImageBackground()
 

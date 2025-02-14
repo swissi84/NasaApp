@@ -1,10 +1,10 @@
 package de.syntax_institut.jetpack.a04_05_online_shopper.Views
 
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -15,17 +15,14 @@ import androidx.compose.ui.unit.dp
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.ExoPlayer
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaDataAssets
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaLinkAssets
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun DetailViewVideo(
     nasaLinkAssets: NasaLinkAssets,
-    nasaDataAssets: NasaDataAssets,
+    nasaDataAssets: NasaDataAssets
 ) {
 
-
-    val encodedNasaId2 = nasaDataAssets.nasa_id.replace(" ", "%20")
+    val encodedNasaId = nasaDataAssets.nasa_id.replace(" ", "%20")
 
     Box(
         modifier = Modifier
@@ -35,25 +32,26 @@ fun DetailViewVideo(
         Column(
             modifier = Modifier
                 .fillMaxSize(),
-
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(nasaDataAssets.title)
+                Text(nasaDataAssets.title)
+                Spacer(modifier = Modifier.height(16.dp))
 
+
+            ExoPlayer(
+                videoUrl = "https://images-assets.nasa.gov/video/${encodedNasaId}/${encodedNasaId}~mobile.mp4",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
             Spacer(modifier = Modifier.height(16.dp))
+                Text("Test")
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(nasaDataAssets.nasa_id)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(encodedNasaId)
 
-
-            ExoPlayer("https://images-assets.nasa.gov/video/${encodedNasaId2}/${encodedNasaId2}~mobile.mp4")
-
-            println(nasaDataAssets.nasa_id)
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Test")
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(nasaDataAssets.nasa_id)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(encodedNasaId2)
         }
     }
 }

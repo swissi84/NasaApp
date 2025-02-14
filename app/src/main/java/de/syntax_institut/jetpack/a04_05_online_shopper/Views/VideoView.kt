@@ -47,6 +47,7 @@ import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.YouTube
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaDataAssets
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaLinkAssets
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.model.VideoViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun VideoView(
@@ -181,3 +182,4 @@ fun VideoView(
         }
     }
 }
+

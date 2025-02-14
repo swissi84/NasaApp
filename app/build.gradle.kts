@@ -84,4 +84,6 @@ dependencies {
     //API Logger
     implementation(libs.logging.interceptor)
 
+    //System UI Controller
+    implementation(libs.accompanist.systemuicontroller)
 }
