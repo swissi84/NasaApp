@@ -1,11 +1,13 @@
 package de.syntax_institut.jetpack.a04_05_online_shopper.Navigation
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -18,12 +20,15 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -33,7 +38,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import de.syntax_institut.fakeStore.ImageView
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.DetailViewImage
@@ -51,6 +55,7 @@ import de.syntax_institut.jetpack.a04_05_online_shopper.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 
 
+@RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AppNavigation(
@@ -62,14 +67,10 @@ fun AppNavigation(
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
-//    val configuration = LocalConfiguration.current
-//    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-//    val systemUiController = rememberSystemUiController()
-//
-//    // Systemleisten ausblenden im Querformat
-//    LaunchedEffect(isLandscape) {
-//        systemUiController.isSystemBarsVisible = !isLandscape
-//    }
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
+    val bottomBarHeight = if (isLandscape) 0.dp else 120.dp
 
     AppTheme(
 //        isDarkMode = isDarkMode
@@ -78,21 +79,23 @@ fun AppNavigation(
             modifier = Modifier
                 .fillMaxSize()
         ) {
+
             FullImageBackground()
 
             Scaffold(modifier = Modifier
                 .fillMaxSize(),
-
                 bottomBar = {
                     NavigationBar(
-                        modifier = Modifier,
+                        modifier = Modifier
+                            .height(bottomBarHeight)
+                        .graphicsLayer {
+                            shadowElevation = 4.dp.toPx()
+                        alpha = 0.9f
+                    },
                         containerColor = Color.Transparent,
-                        tonalElevation = 5.dp
+                        tonalElevation = 0.dp
                     )
                     {
-                        val navBackStackEntry by navController.currentBackStackEntryAsState()
-                        val currentDestination = navBackStackEntry?.destination
-
                         NavItem.entries.forEachIndexed { index, item ->
                             NavigationBarItem(
                                 selected = currentBackStackEntry?.destination?.hasRoute(item.route::class)
@@ -117,11 +120,7 @@ fun AppNavigation(
                                         text = item.label,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold
-
-                                    )
-
-                                },
-
+                                    ) },
                                 )
                         }
                     }
@@ -134,6 +133,8 @@ fun AppNavigation(
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                         .padding(innerPadding)
+                        .padding(bottom = 10.dp)
+
 
                 ) {
 
@@ -222,8 +223,8 @@ fun AppNavigation(
                                 description = nasaDetailRouteVideo.description,
                                 nasa_id = nasaDetailRouteVideo.nasa_id,
                                 media_type = nasaDetailRouteVideo.media_item,
+                            ),
                             )
-                        )
                     }
                 }
             }
@@ -266,8 +267,6 @@ data class NasaDetailRouteVideo(
     val media_item: String,
 
     )
-
-
 
 enum class NavItem(
     val route: Any,

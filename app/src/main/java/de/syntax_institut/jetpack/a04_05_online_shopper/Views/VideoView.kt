@@ -1,3 +1,5 @@
+@file:Suppress("NAME_SHADOWING")
+
 package de.syntax_institut.jetpack.a04_05_online_shopper.Views
 
 import android.util.Log
@@ -22,6 +24,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,9 +36,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import de.syntax_institut.jetpack.a04_05_online_shopper.NasaData
@@ -72,7 +77,7 @@ fun VideoView(
             LazyVerticalGrid(
                 modifier = Modifier
                     .fillMaxSize(),
-                columns = GridCells.Fixed(3),
+                columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.Center,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -93,32 +98,52 @@ fun VideoView(
 
                         Box(
                             modifier = Modifier
-                                .height(100.dp)
+                                .height(140.dp)
                                 .fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.TopCenter
                         ) {
-                            SubcomposeAsyncImage(
-                                model = nasaLinkAssets.href,
-                                contentDescription = "Nasa Image Detail",
-                                modifier = Modifier
-                                    .height(100.dp),
-                                contentScale = ContentScale.Crop,
-                                onLoading = {
-                                    Log.d("AsyncImage", "Image loading...")
-                                },
-                                onSuccess = { state ->
-                                    Log.d("AsyncImage", "Image loaded successfully")
-                                },
-                                loading = {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.scale(1f))
-                                    }
-                                },
-                            )
+                           Column(
+                               modifier = Modifier
+                                   .padding(vertical = 0.dp),
+                               horizontalAlignment = Alignment.CenterHorizontally,
+
+
+                           ) {
+
+                               SubcomposeAsyncImage(
+                                   model = nasaLinkAssets.href,
+                                   contentDescription = "Nasa Image Detail",
+                                   modifier = Modifier
+                                       .height(100.dp),
+                                   contentScale = ContentScale.Crop,
+                                   onLoading = {
+                                       Log.d("AsyncImage", "Image loading...")
+                                   },
+                                   onSuccess = { state ->
+                                       Log.d("AsyncImage", "Image loaded successfully")
+                                   },
+                                   loading = {
+                                       Box(
+                                           modifier = Modifier.fillMaxSize(),
+                                           contentAlignment = Alignment.Center
+                                       ) {
+                                           CircularProgressIndicator(
+                                               modifier = Modifier.scale(1f)
+                                           )
+                                       }
+                                   },
+                               )
+                              Spacer(modifier.padding(vertical = 2.dp))
+                               Text(
+                                   text = nasaDataAssets.title,
+                                   textAlign = TextAlign.Center,
+                                   style = MaterialTheme.typography.labelMedium,
+                                   maxLines = 2
+
+
+
+                               )
+                           }
                         }
                     }
                 }
@@ -173,6 +198,7 @@ fun VideoView(
                 modifier = Modifier
                     .padding(16.dp),
                 onClick = { isSearchVisible = !isSearchVisible },
+                containerColor = Color(0xFF003B5C)
             ) {
                 Icon(
                     Icons.Default.Search,

@@ -29,7 +29,7 @@ fun DetailViewImage(
     nasaLink: NasaLink,
     nasaData: NasaData,
 ) {
-    // Initial state for zoom and pan
+
     val zoomState = remember { mutableStateOf(1f) }
     val panState = remember { mutableStateOf(Offset(0f, 0f)) }
 
@@ -49,26 +49,25 @@ fun DetailViewImage(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Box to hold the image with zoom and pan functionality
             Box(
                 modifier = Modifier
-                    .fillMaxSize()  // Allow the image to fill the entire screen
+                    .fillMaxSize()
                     .pointerInput(Unit) {
                         detectTransformGestures { _, pan, zoom, _ ->
-                            // Apply scaling and pan movement on pinch-to-zoom
+
                             zoomState.value = zoomState.value * zoom
                             panState.value = panState.value + pan
                         }
                     },
                 contentAlignment = Alignment.Center
             ) {
-                // Display the image with zoom and pan capability
+
                 SubcomposeAsyncImage(
                     model = nasaLink.href,
                     contentDescription = "Nasa Image Detail",
                     modifier = Modifier
-                        .fillMaxSize()  // Fill the screen
-                        .clip(RoundedCornerShape(16.dp))  // Optional: No rounded corners
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp))
                         .graphicsLayer(
                             scaleX = zoomState.value,
                             scaleY = zoomState.value,

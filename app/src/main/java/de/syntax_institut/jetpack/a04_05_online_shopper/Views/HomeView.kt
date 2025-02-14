@@ -144,7 +144,7 @@ fun HomeView(
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier
-                                    .scale(0.5f))
+                                    .scale(2f))
                         }
                     },
                     error = {
@@ -163,9 +163,7 @@ fun HomeView(
                     }
                 )
             }
-
             Spacer(Modifier.padding(6.dp))
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
