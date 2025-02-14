@@ -57,10 +57,10 @@ fun VideoView(
     val nasaDataAssets by videoViewModel.nasaDataAssetsState.collectAsState()
     val nasaLinkAssets by videoViewModel.nasaLinksAssetsState.collectAsState()
 
-    var search2 by remember { mutableStateOf("") }
+    var searchVideo by remember { mutableStateOf("") }
     var isSearchVisible by remember { mutableStateOf(false) }
 
-    val filteredLinksVideo = nasaLinkAssets.filter { it.rel == "preview" && it.href.isNotEmpty() }
+    val filteredLinksVideo = nasaLinkAssets.filter { it.rel == "preview" /*&& it.href.isNotEmpty()*/ }
 
     Box(
         modifier = Modifier
@@ -156,9 +156,9 @@ fun VideoView(
 
             if (isSearchVisible) {
                 TextField(
-                    value = search2,
+                    value = searchVideo,
                     onValueChange = {
-                        search2 = it.lowercase()
+                        searchVideo = it
                         videoViewModel.loadNasaVideo(it)
                     },
 

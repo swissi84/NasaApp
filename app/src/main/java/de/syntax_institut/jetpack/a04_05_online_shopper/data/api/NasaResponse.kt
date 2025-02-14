@@ -17,9 +17,9 @@ data class NasaItem(
 
 
 data class NasaData(
-    val center: String,
+    val center: String = "",
     val dateCreated: String = "",
-    val description: String,
+    val description: String = "",
     val nasa_id: String,
     val secondaryCreator: String = "",
     val title: String,

@@ -15,12 +15,17 @@ import androidx.compose.ui.unit.dp
 import de.syntax_institut.jetpack.a04_05_online_shopper.Views.Components.ExoPlayer
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaDataAssets
 import de.syntax_institut.jetpack.a04_05_online_shopper.data.api.NasaLinkAssets
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun DetailViewVideo(
     nasaLinkAssets: NasaLinkAssets,
     nasaDataAssets: NasaDataAssets,
 ) {
+
+
+    val encodedNasaId2 = nasaDataAssets.nasa_id.replace(" ", "%20")
 
     Box(
         modifier = Modifier
@@ -39,12 +44,16 @@ fun DetailViewVideo(
             Spacer(modifier = Modifier.height(16.dp))
 
 
-            ExoPlayer("http://images-assets.nasa.gov/video/${nasaDataAssets.nasa_id}~orig.mp4")
+            ExoPlayer("https://images-assets.nasa.gov/video/${encodedNasaId2}/${encodedNasaId2}~mobile.mp4")
+
             println(nasaDataAssets.nasa_id)
 
             Spacer(modifier = Modifier.height(16.dp))
             Text("Test")
+            Spacer(modifier = Modifier.height(16.dp))
             Text(nasaDataAssets.nasa_id)
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(encodedNasaId2)
         }
     }
 }

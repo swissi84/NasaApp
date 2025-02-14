@@ -28,7 +28,7 @@ open class VideoViewModel: ViewModel() {
     fun loadNasaVideo(searchQuery: String) {
         viewModelScope.launch {
             try {
-                val response = api.searchVideo(searchQuery.lowercase())
+                val response = api.searchVideo(searchQuery)
                 val nasaDataAssetsList = response.collection.items.flatMap { it.data }
                 val nasaLinksAssetsList = response.collection.items.flatMap { it.links ?: emptyList() }
 

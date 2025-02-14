@@ -20,9 +20,9 @@ data class NasaItemAssets(
 
 
 data class NasaDataAssets(
-    val center: String,
+    val center: String = "",
     val dateCreated: String = "",
-    val description: String,
+    val description: String = "",
     val nasa_id: String,
     val title: String,
     val media_type: String,
